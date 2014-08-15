@@ -7,5 +7,7 @@ from datetime import datetime, timedelta
 from flask import *
 
 from talisman import app, db
+from talisman.user.models import *
+
 
 os.environ['PYTHONINSPECT'] = 'True'

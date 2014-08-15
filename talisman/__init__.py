@@ -10,8 +10,8 @@ app.config.from_object('talisman.config')
 app.wsgi_app = ProxyFix(app.wsgi_app)
 
 # Register blueprints
-from talisman.user.views import users
-app.register_blueprint(users)
+#from talisman.user.views import users
+#app.register_blueprint(users)
 
 
 
