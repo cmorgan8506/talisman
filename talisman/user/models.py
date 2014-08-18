@@ -21,6 +21,7 @@ class User(db.Model):
     __tablename__ = "users"
 
     id = db.Column(db.Integer, primary_key=True)
+    profile_id = db.Column(db.Integer, db.ForeignKey('user_profiles.id'))
     username = db.Column(db.String(40), unique=True, nullable=False)
     email = db.Column(db.String(80), unique=True, nullable=False)
     created = db.Column(db.DateTime, default=datetime.now())
@@ -28,18 +29,18 @@ class User(db.Model):
 
     # - Relationships - #
     groups = db.relationship('UserGroup', secondary=user_groups,
-                             backref=db.backref('users', lazy='dynamic'))
+        backref=db.backref('users', lazy='dynamic'))
     addresses = db.relationship('UserAddress',
-        backref=db.backref('user', lazy='joined'), lazy='dynamic')
+        backref=db.backref('user', lazy='joined'))
     profile = db.relationship('UserProfile',
-        backref=db.backref('user', lazy='joined'), lazy='dynamic')
+        backref=db.backref('user', lazy='joined', uselist=False))
 
     # - Authentication Methods - #
     def set_password(self, password_str):
         self.password = generate_password_hash(password_str)
 
-    def check_password(self, password_hash):
-        return check_password_hash(self.password, password_hash)
+    def check_password(self, password):
+        return check_password_hash(self.password, password)
 
 
 class UserGroup(db.Model):
@@ -61,7 +62,7 @@ class UserProfile(db.Model):
     """
     __tablename__ = 'user_profiles'
 
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(30), nullable=False)
     last_name = db.Column(db.String(40), nullable=False)
     phone_primary = db.Column(db.String(11), nullable=False)
@@ -75,7 +76,8 @@ class UserAddress(db.Model):
     """
     __tablename__ = 'user_addresses'
 
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     address_1 = db.Column(db.String(80), nullable=False)
     address_2 = db.Column(db.String(80), nullable=True)
     code = db.Column(db.String(10), nullable=False)

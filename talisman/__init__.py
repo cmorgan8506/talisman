@@ -19,7 +19,6 @@ db = SQLAlchemy()
 app = create_app('talisman.config', db)
 
 
-
 @app.errorhandler(404)
 def not_found(error):
     return render_template('404.html')

@@ -1,3 +1,4 @@
+import uuid
 import unittest
 from flask.ext.testing import TestCase
 from talisman import create_app, db
@@ -51,6 +52,12 @@ class TalismanTestCase(TestCase):
         """
         return
 
+    def _rand_str(self, length=None):
+        """
+        Generates a random UUID string of a determined size,
+        to be used for test data.
+        """
+        return str(uuid.uuid1())[:length]
 
 if __name__ == '__main__':
     unittest.main()
