@@ -3,15 +3,20 @@ from flask.ext.sqlalchemy import SQLAlchemy
 from werkzeug.contrib.fixers import ProxyFix
 
 
-# Boostrap Flask App
-app = Flask(__name__)
-db = SQLAlchemy(app)
-app.config.from_object('talisman.config')
-app.wsgi_app = ProxyFix(app.wsgi_app)
+def create_app(config_filename, db):
+    app = Flask(__name__)
+    app.config.from_object(config_filename)
+    app.wsgi_app = ProxyFix(app.wsgi_app)
+    db.init_app(app)
+    # Register blueprints
+    #from talisman.user.views import users
+    #app.register_blueprint(users)
+    return app
 
-# Register blueprints
-#from talisman.user.views import users
-#app.register_blueprint(users)
+
+# Boostrap Flask App
+db = SQLAlchemy()
+app = create_app('talisman.config', db)
 
 
 

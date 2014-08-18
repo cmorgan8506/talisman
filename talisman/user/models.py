@@ -26,13 +26,15 @@ class User(db.Model):
     created = db.Column(db.DateTime, default=datetime.now())
     password = db.Column(db.String(80), nullable=False)
 
+    # - Relationships - #
     groups = db.relationship('UserGroup', secondary=user_groups,
                              backref=db.backref('users', lazy='dynamic'))
-
     addresses = db.relationship('UserAddress',
         backref=db.backref('user', lazy='joined'), lazy='dynamic')
+    profile = db.relationship('UserProfile',
+        backref=db.backref('user', lazy='joined'), lazy='dynamic')
 
-    # Authentication Methods
+    # - Authentication Methods - #
     def set_password(self, password_str):
         self.password = generate_password_hash(password_str)
 
