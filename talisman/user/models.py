@@ -21,7 +21,7 @@ class User(db.Model):
     __tablename__ = "users"
 
     id = db.Column(db.Integer, primary_key=True)
-    profile_id = db.Column(db.Integer, db.ForeignKey('user_profiles.id'))
+    profile_id = db.Column(db.Integer, db.ForeignKey('user_profiles.id', ondelete='CASCADE'))
     username = db.Column(db.String(40), unique=True, nullable=False)
     email = db.Column(db.String(80), unique=True, nullable=False)
     created = db.Column(db.DateTime, default=datetime.now())
@@ -33,7 +33,8 @@ class User(db.Model):
     addresses = db.relationship('UserAddress',
         backref=db.backref('user', lazy='joined'))
     profile = db.relationship('UserProfile',
-        backref=db.backref('user', lazy='joined', uselist=False))
+        backref=db.backref('user', lazy='joined', uselist=False,
+                           cascade='all, delete-orphan'))
 
     # - Authentication Methods - #
     def set_password(self, password_str):

@@ -11,3 +11,7 @@ from talisman.user.models import *
 
 
 os.environ['PYTHONINSPECT'] = 'True'
+
+ctx = app.test_request_context()
+ctx.push()
+app.preprocess_request()

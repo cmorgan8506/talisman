@@ -9,14 +9,15 @@ def create_app(config_filename, db):
     app.wsgi_app = ProxyFix(app.wsgi_app)
     db.init_app(app)
     # Register blueprints
-    #from talisman.user.views import users
-    #app.register_blueprint(users)
+    from talisman.user.views import users
+    app.register_blueprint(users, url_prefix='/user')
     return app
 
 
 # Boostrap Flask App
 db = SQLAlchemy()
 app = create_app('talisman.config', db)
+app_config = app.config
 
 
 @app.errorhandler(404)

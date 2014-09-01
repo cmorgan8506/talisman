@@ -11,7 +11,7 @@ class TalismanTestCase(TestCase):
     """
     SQLALCHEMY_DATABASE_URI = 'sqlite:////tmp/test.db'
     TESTING = True
-    DEBUG = True
+    DEBUG = False
 
     def create_app(self):
         """
